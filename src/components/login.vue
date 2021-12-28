@@ -47,7 +47,7 @@
           <v-card-text>
             <v-form ref="form">
               <v-text-field
-                v-model="email"
+                v-model="login.Email"
                 label="Email"
                 type="email"
                 prepend-icon="mdi-email"
@@ -57,7 +57,7 @@
               ></v-text-field>
 
               <v-text-field
-                v-model="password"
+                v-model="login.Password"
                 label="Password"
                 type="password"
                 prepend-icon="mdi-lock"
@@ -68,6 +68,7 @@
               <v-btn
                 color="primary"
                 block
+                @click="loginPost"
                >
                 Login</v-btn>
                 <v-btn
@@ -169,6 +170,10 @@ Vue.use(VueAxios, axios);
         Password:null,
         Phone:null
       },
+      login:{
+        Email:null,
+        Password:null
+      },
       phoneRules: [
         v => !!v || 'Phone is required',
         v => v.length >= 10 || 'Phone must be at least 10 characters'
@@ -180,8 +185,8 @@ Vue.use(VueAxios, axios);
     }),
 
     methods: {
+      //register
       regPost(e) {
-        
         this.axios.post(
           'https://localhost:44316/api/users/register/',
           this.reg).then(response => {
@@ -189,12 +194,27 @@ Vue.use(VueAxios, axios);
 
           if(response.status == 201){
             alert("Registration Successful");
-            this.$router.push('/about');
+            this.$router.push('/login');
           }
           
         }).catch(error => {
                       alert("Registration Failed");
 
+          console.log(error);
+        });
+        e.preventDefault(); 
+      },
+      //login
+      loginPost(e){
+        this.axios.post('https://localhost:44316/api/users/login/',this.login).then(response => {
+          console.warn(response.data);
+
+            alert("Login Successful");
+            this.$router.push('/');
+          
+        }).catch(error => {
+
+          alert("Login Failed");
           console.log(error);
         });
         e.preventDefault(); 
