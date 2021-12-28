@@ -8,7 +8,7 @@
     <br>
     <br>
     <br>
-    <h1 position="absolute">This will be the page after login</h1>
+    <h1 position="absolute">Congratulations, you are an authenticated user! :)</h1> 
   </div>
 </template>
 
@@ -24,12 +24,18 @@ export default ({
   mounted(){
     this.axios.get('https://localhost:44316/api/users/AuthenticateUser',{
       headers: {
-        Authorization: 'Bearer ' + this.$store.state.jwt.token
+        Authorization: 'bearer ' + this.$cookies.get('jwt')
       }
     }).then(response => {
+      if(response.status == 200){
+            console.log("Authenticated");
       console.warn(response.data);
+      }
     }
     ).catch(error => {
+
+      console.log("Token is not valid!");
+      this.$router.push('/pagenotfound');
       console.warn(error);
     });
   }

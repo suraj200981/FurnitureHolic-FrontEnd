@@ -213,13 +213,13 @@ Vue.use(VueCookies);
       loginPost(e){
         this.axios.post('https://localhost:44316/api/users/login/',this.login).then(response => {
         
-        //stores token in cookie
-        document.cookie = "jwt="+response.data.access_token+"; expires="+response.data.expiration_Time;
-            
-            console.warn(this.jwt.token);
+                    console.warn(response.data);
 
+        //stores token in cookie
+        document.cookie = "jwt="+response.data.access_token+"; expires="+this.toDateTime(response.data.expiration_Time);
+            
             alert("Login Successful");
-            this.$router.push('/');
+            this.$router.push('/about');
           
         }).catch(error => {
 
@@ -227,7 +227,12 @@ Vue.use(VueCookies);
           console.log(error);
         });
         e.preventDefault(); 
-      }
+      },
+       toDateTime(secs) {
+    var t = new Date(1970, 0, 1); // Epoch
+    t.setSeconds(secs);
+    return t;
+}
     }
   }
 </script>
