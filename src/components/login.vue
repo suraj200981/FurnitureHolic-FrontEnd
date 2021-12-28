@@ -158,12 +158,18 @@
 import Vue from 'vue'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
+import VueCookies from 'vue-cookies'
+
 Vue.use(VueAxios, axios);
+Vue.use(VueCookies);
 
   export default {
     name: 'login',
 
     data: () => ({
+      jwt:{
+        token:''
+      },
       reg:{
         Name:null,
         Email:null,
@@ -198,16 +204,19 @@ Vue.use(VueAxios, axios);
           }
           
         }).catch(error => {
-                      alert("Registration Failed");
-
-          console.log(error);
+              alert("Registration Failed");
+              console.log(error);
         });
         e.preventDefault(); 
       },
       //login
       loginPost(e){
         this.axios.post('https://localhost:44316/api/users/login/',this.login).then(response => {
-          console.warn(response.data);
+        
+        //stores token in cookie
+        document.cookie = "jwt="+response.data.access_token+"; expires="+response.data.expiration_Time;
+            
+            console.warn(this.jwt.token);
 
             alert("Login Successful");
             this.$router.push('/');

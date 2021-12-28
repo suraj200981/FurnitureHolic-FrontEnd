@@ -5,7 +5,7 @@
     <br>
     <br>
     <br>
-    <h1>Please login</h1>
+    <h1>FurnitureHolic home page</h1>
   </div>
 </template>
 
