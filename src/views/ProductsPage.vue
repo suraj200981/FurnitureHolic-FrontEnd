@@ -9,6 +9,15 @@
     <br>
     <br>
     <h1 position="absolute">Congratulations, you are an authenticated user! :)</h1> 
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <v-btn color="primary" @click="logout()">
+      <v-icon left>mdi-logout</v-icon>
+      Logout
+    </v-btn>
   </div>
 </template>
 
@@ -29,15 +38,20 @@ export default ({
     }).then(response => {
       if(response.status == 200){
             console.log("Authenticated");
-      console.warn(response.data);
+           console.warn(response.data);
       }
     }
     ).catch(error => {
-
       console.log("Token is not valid!");
       this.$router.push('/pagenotfound');
       console.warn(error);
     });
+  },
+  methods: {
+    logout(){
+      this.$cookies.remove('jwt');
+      this.$router.push('/login');
+    }
   }
 })
 </script>

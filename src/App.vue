@@ -9,7 +9,7 @@
       <template v-slot:extension>
         <v-tabs align-with-title>
          <router-link to="/login" style="color:white; text-decoration:none;"> <v-tab> login</v-tab></router-link>
-         <router-link to="/about" style="color:white; text-decoration:none;"> <v-tab> about</v-tab></router-link>
+         <router-link to="/productspage" style="color:white; text-decoration:none;"> <v-tab> Products</v-tab></router-link>
         </v-tabs>
       </template>
     </v-app-bar>

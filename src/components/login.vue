@@ -200,7 +200,7 @@ Vue.use(VueCookies);
 
           if(response.status == 201){
             alert("Registration Successful");
-            this.$router.push('/login');
+            this.$router.push('/');
           }
           
         }).catch(error => {
@@ -219,10 +219,10 @@ Vue.use(VueCookies);
         document.cookie = "jwt="+response.data.access_token+"; expires="+this.toDateTime(response.data.expiration_Time);
             
             alert("Login Successful");
-            this.$router.push('/about');
+            this.$router.push('/productspage');
           
         }).catch(error => {
-
+          
           alert("Login Failed");
           console.log(error);
         });
