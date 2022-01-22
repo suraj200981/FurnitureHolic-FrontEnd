@@ -17,11 +17,10 @@
                 <div class="col-md-3">
                     <div class="card card-user">
                     <div class="image">
-                        <img src="https://ununsplash.imgix.net/photo-1431578500526-4d9613015464?fit=crop&fm=jpg&h=300&q=75&w=400" alt="..."/>
                     </div>
                     <div class="card-body">
                         <div class="author">
-                            <img class="avatar border-gray" src="" alt="..."/>
+                             <img style="border-radius: 50%; height:300px; padding-top:100px" v-bind:src="userDP" alt="..."/>
                             <h5 class="title" style="text-align:center;">Mr {{user.name}}</h5>
                         <p class="description">
                             Email: {{userEmail}}
@@ -57,6 +56,7 @@ export default ({
  data: () => ({
       user : [],
       userEmail: '',
+      userDP:'',
     }),
 
   beforeMount(){
@@ -77,7 +77,9 @@ export default ({
       params: { email: this.$cookies.get('user') } }).then(res => {
           this.user = res.data[0];
           this.userEmail = this.$cookies.get('user');
-                  console.log(this.user);
+
+          this.userDP = 'https://localhost:44316/' + this.user.imageUrl;
+
       }).catch(err => {
         console.log(err);
       });

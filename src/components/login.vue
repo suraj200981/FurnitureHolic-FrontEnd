@@ -83,7 +83,7 @@
         <v-card flat>
           <v-card-text>
            <!--register-->
-           <v-form @submit="regPost" method="post">
+            <v-form ref="form">
              <v-text-field
               v-model="reg.Name"
               label="Name"
@@ -111,15 +111,6 @@
               color="primary"
               :rules="passwordRules"
               required
-              ></v-text-field>
-              <v-text-field
-              v-model="confirmPassword"
-              label="Confirm Password"
-              type="password"
-              prepend-icon="mdi-lock"
-              color="primary"
-              :rules="confirmPasswordRules"
-              required 
               ></v-text-field>
               <v-text-field
               v-model="reg.Phone"
@@ -175,7 +166,7 @@ Vue.use(VueCookies);
         Name:null,
         Email:null,
         Password:null,
-        Phone:null
+        Phone:null,
       },
       login:{
         Email:null,
@@ -193,23 +184,21 @@ Vue.use(VueCookies);
 
     methods: {
       //register
-      regPost(e) {
-        this.axios.post(
-          'https://localhost:44316/api/users/register/',
-          this.reg).then(response => {
-          console.warn(response.data);
+      regPost() {
+        console.log(this.reg);
 
-          if(response.status == 201){
-            alert("Registration Successful");
-            this.$router.push('/');
-          }
-          
-        }).catch(error => {
-              alert("Registration Failed");
-              console.log(error);
-        });
-        e.preventDefault(); 
-      },
+        let formData = new FormData();
+        formData.append('Name', this.reg.Name);
+        formData.append('Email', this.reg.Email);
+        formData.append('Password', this.reg.Password);
+        formData.append('Phone', this.reg.Phone);
+
+          this.axios.post('https://localhost:44316/api/users/register',formData).then(response => {
+            console.log(response.data);
+          }).catch(error => {
+            console.log(error);
+          });
+          },
       //login
       loginPost(e){
         this.axios.post('https://localhost:44316/api/users/login/',this.login).then(response => {
