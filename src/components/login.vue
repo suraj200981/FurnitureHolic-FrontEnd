@@ -146,19 +146,17 @@
     </v-tabs>
            </v-card>
           </center>
-
       </v-col>
-    
   </v-container>
 </template>
 
 <script>
 
-
 import Vue from 'vue'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import VueCookies from 'vue-cookies'
+
 
 Vue.use(VueAxios, axios);
 Vue.use(VueCookies);
@@ -167,6 +165,9 @@ Vue.use(VueCookies);
     name: 'login',
 
     data: () => ({
+      user:{
+        Email: '',   
+      },
       jwt:{
         token:''
       },
@@ -213,14 +214,16 @@ Vue.use(VueCookies);
       loginPost(e){
         this.axios.post('https://localhost:44316/api/users/login/',this.login).then(response => {
         
-                    console.warn(response.data);
 
         //stores token in cookie
         document.cookie = "jwt="+response.data.access_token+"; expires="+this.toDateTime(response.data.expiration_Time);
             
+             this.user.Email = this.login.Email; //passing email to account page
+
+              this.$cookies.set('user',this.user.Email);
             alert("Login Successful");
-            this.$router.push('/productspage');
-          
+            location.href = 'http://localhost:8080/productspage';
+
         }).catch(error => {
           
           alert("Login Failed");

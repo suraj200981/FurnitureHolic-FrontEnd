@@ -8,8 +8,20 @@
     >
       <template v-slot:extension>
         <v-tabs align-with-title>
-         <router-link to="/login" style="color:white; text-decoration:none;"> <v-tab> login</v-tab></router-link>
-         <router-link to="/productspage" style="color:white; text-decoration:none;"> <v-tab> Products</v-tab></router-link>
+         <a href="/login" style="color:white; text-decoration:none;"> <v-tab> login</v-tab></a>
+         <a href="/productspage" style="color:white; text-decoration:none;"> <v-tab> Products</v-tab></a>
+         <v-spacer></v-spacer>
+       <v-btn class="mx-2"  
+              dark
+              medium
+              color="red"
+              @click="logout()"><v-icon>mdi-logout</v-icon></v-btn>
+        <v-btn class="mx-2"  
+              dark
+              medium
+              color="indigo"
+              @click="goToAccountPage()"
+              ><v-icon>mdi-account</v-icon></v-btn>
         </v-tabs>
       </template>
     </v-app-bar>
@@ -26,11 +38,51 @@
   </v-main>
 
   <v-footer app>
-    <!-- -->
   </v-footer>
 </v-app>
   </div>
 </template>
+<script>
+
+export default ({
+  name: 'App',
+
+  data:() => {
+    return {
+          signOut: false
+    }
+  },
+  mounted() {
+       this.axios.get('https://localhost:44316/api/users/AuthenticateUser',{
+      headers: {
+        Authorization: 'bearer ' + this.$cookies.get('jwt')
+      }
+    }).then(response => {
+      if(response.status == 200){
+            console.log("Authenticated");
+           console.warn(response.data);
+           this.signOut = true;
+      }
+    }
+    ).catch(error => {
+      console.log("Token is not valid!");
+      console.warn(error);
+      this.signOut = true;
+    });
+  },
+    methods: {
+    logout(){
+     this.$cookies.remove('jwt');
+     this.$cookies.remove('user');
+      location.href = 'http://localhost:8080/login';
+    },
+    goToAccountPage(){
+      location.href = 'http://localhost:8080/userprofile';
+    }
+  }
+})
+</script>
+
 
 <style lang="scss">
 #app {
